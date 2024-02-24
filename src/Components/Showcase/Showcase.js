@@ -1,17 +1,16 @@
-import React,{useState, useEffect} from "react";
-import classes from "./Showcase.module.css";
+import React, { useState, useEffect } from "react";
 
-const Showcase = ({slideImg}) => {
+const Showcase = ({ slideImg }) => {
   const [eachImg, setEachImg] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() =>{
-    setEachImg(slideImg || [])
+  useEffect(() => {
+    setEachImg(slideImg || []);
   }, [slideImg]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % eachImg.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % eachImg.length);
     }, 3000); // Change image every 3 seconds
 
     return () => clearInterval(intervalId);
@@ -19,14 +18,23 @@ const Showcase = ({slideImg}) => {
 
   const eachImgSlide = Array.isArray(eachImg) ? eachImg : [];
 
-  const mapEachSlide = eachImgSlide.map((item) =>{
+  const mapEachSlide = eachImgSlide.map((item) => {
     return item.poster_path;
   });
 
   return (
-    <section className="relative mt-[-x]">
-      <img className="w-full z-[2px] h-[600px] object-fit absolute" src={`https://image.tmdb.org/t/p/w500/${mapEachSlide[currentIndex]}`} alt="slideImg" />
-      <nav className=" w-full z-[10px] flex justify-center">
+    // <div className="w-full h-[700px] bg-slate-500">
+    //   <div className="relative">
+    //       <div className=" absolute flex justify-end w-full">
+    //         <img className="w-full z-[2px] h-[700px]" src={`https://image.tmdb.org/t/p/w500/${mapEachSlide[currentIndex]}`} alt="slideImg" />
+    //       </div>
+    //   </div>
+    
+    // </div>
+    <section className=" pb-[550px] w-[700px]">
+    <img className="w-full absolute center bg bg-blend-saturation z-[2px] h-[600px]" src={`https://image.tmdb.org/t/p/w500/${mapEachSlide[currentIndex]}`} alt="slideImg" />
+      {/* <img className="w-full z-[2px] h-[600px] object-fit absolute" src="../../Assets/adidas-climacool (1).gif" alt="slideImg" /> */}
+      <nav className=" w-full absolute z-[10px] flex justify-center">
         <div className="w-[85%] flex justify-between py-[20px]">
             <div>
             <h1 className="text-2xl text-[#fff]"><span className=" font-extrabold">MOVIE</span>RISE</h1>
@@ -39,7 +47,6 @@ const Showcase = ({slideImg}) => {
             </div>
         </div>
       </nav>
-
 
       {/* the inside text */}
       <main className="w-full md:hidden block mt-[120px] relative justify-center">
@@ -63,10 +70,7 @@ const Showcase = ({slideImg}) => {
         </div>
       </main>
 
-
-
-
-      <main className="w-full md:flex hidden mt-[392px] justify-center">
+      <main className="w-full absolute md:flex hidden mt-[392px] justify-center">
         <div className=" text-[#fff] w-[85%] flex items-center justify-between">
           <div className="py-5">
             <h1 className="text-3xl line-clamp-1 font-bold">THE JUNGLE BOOK</h1>

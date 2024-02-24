@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Movie from "./Components/movie/Movie";
+import MovieDetail from "./Components/Movie Details/MovieDetail";
 import Movies from "./Components/Movies/Movies";
-import Receive from "./Components/Receive Info/Receive";
 import Showcase from "./Components/Showcase/Showcase";
-
 const App = () => {
   const [movieData, setMovieData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showcaseSliddingImg, setShowcaseSliddingImg] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
+const [movieDetailItem, setMovieDetailItem] = useState([]);
  
   useEffect(() => {
     const fetchMovie = async () => {
@@ -45,9 +44,15 @@ const App = () => {
 
   const clickItems =(event) =>{
     console.log(event);
+    setMovieDetailItem(event);
+    setShowModal(true);
   }
+
   return (
     <div className="">
+      <div className="">
+      {showModal && <MovieDetail movieDetailItem={movieDetailItem} setShowModal ={setShowModal} />}
+      </div>
       <Showcase slideImg={showcaseSliddingImg} />
       <div className="flex w-full justify-center">
         {movieData.length === 0 ? loading && loadingData  : <div className="w-[85%] mt-[60px] py-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
