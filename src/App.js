@@ -1,83 +1,84 @@
-import React, { useState, useEffect } from "react";
-import MovieDetail from "./Components/Movie Details/MovieDetail";
-import Movies from "./Components/Movies/Movies";
-import Showcase from "./Components/Showcase/Showcase";
-const App = () => {
-  const [movieData, setMovieData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showcaseSliddingImg, setShowcaseSliddingImg] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-const [movieDetailItem, setMovieDetailItem] = useState([]);
- 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      setLoading(true)
-      
-      try {
-        const movieFetch = await fetch(
-          "https://api.themoviedb.org/3/movie/popular?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US"
-        );
-        const res = await movieFetch.json();
+import React, { useEffect, useState } from "react";
+import Navbar from "./Assets/Components/Navbar/Navbar";
+import Hero from "./Assets/Components/HeroSec/Hero";
+import img from "../src/Assets/adidas-climacool (1).gif";
+import MoviesList from "./Assets/Components/MoviesList/MoviesList";
+import SelectedMovie from "./Assets/Components/SelectedMovie/SelectedMovie";
 
-        if(res.ok){
-          throw new Error('Data cannot be found...');
+const App = () => {
+  const [TrendingMovies, setTrendingMovies] = useState([]);
+  const [TvShow, setTvShow] = useState([]);
+  const [showLoading, setShowLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Loading....');
+  const [selectedMovie, setSelectedMovie] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        setShowLoading(true);
+        const responseTrending = await fetch(
+          "https://api.themoviedb.org/3/trending/movie/day?api_key=0128e9a89b321438650ee3a8816a9793"
+        );
+        const responseTv = await fetch(
+          "https://api.themoviedb.org/3/trending/tv/day?api_key=0128e9a89b321438650ee3a8816a9793"
+        );
+
+        if (!responseTrending.ok || !responseTv.ok) {
+          throw new Error("Request cannot be reacted please check the link");
         }
 
-        
+        const dataTrending = await responseTrending.json();
+        const dataTv = await responseTv.json();
 
-        const data = res.results.map((item) => {
+        const trendingItems = dataTrending.results.map((item) => {
           return item;
         });
-        setMovieData(data);
-        setShowcaseSliddingImg(data)
-        setLoading(false)
+        const tvItems = dataTv.results.map((item) => {
+          return item;
+        });
 
+        setTrendingMovies(trendingItems);
+        setTvShow(tvItems);
+        // setTrendingMovies(dataTrending.results, dataTv.results)
+        // setTvShow(dataTv.results);
       } catch (error) {
-        console.log(error)
+        setLoadingMessage(`${error.message}, please check your network or link`);
       }
     };
-
-    fetchMovie();
+    setShowLoading(false);
+    fetchItem();
   }, []);
 
-  const loadingData = <p className="text-5xl text-red-500">Loading...</p>
+  const loadingText = showLoading && <p>{loadingMessage}</p>;
 
-  const clickItems =(event) =>{
-    console.log(event);
-    setMovieDetailItem(event);
-    setShowModal(true);
+  const clickX=() =>{
+    setShowModal(false)
   }
 
-  return (
-    <div className="">
-      <div className="">
-      {showModal && <MovieDetail movieDetailItem={movieDetailItem} setShowModal ={setShowModal} />}
-      </div>
-      <Showcase slideImg={showcaseSliddingImg} />
-      <div className="flex w-full justify-center">
-        {movieData.length === 0 ? loading && loadingData  : <div className="w-[85%] mt-[60px] py-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
-          {movieData.map((movie) => (
-            <div onClick={() => clickItems(movie)} key={movie.id} className=" ">
-              <Movies
-                adult={movie.adult}
-                backgroundImg={movie.backdrop_path}
-                genre={movie.genre_ids}
-                id={movie.id}
-                originalLang={movie.original_language}
-                titleinChina={movie.original_title}
-                description={movie.overview}
-                popularity={movie.popularity}
-                posterImg={movie.poster_path}
-                releaseDate={movie.release_date}
-                title={movie.title}
-                rating={movie.vote_average}
-              />
-            </div>
-          ))}
-        </div>}
-      </div>
+  const clickItem=(item) =>{
+    setSelectedMovie(item);
+    setShowModal(true)
+  }
 
-      {/* <Receive /> */}
+  const chooseBtn =(item) =>{
+    console.log(item.target.value)
+  };
+
+  console.log(selectedMovie.first_air_date)
+  return (
+    <div>
+      <Navbar chooseBtn={chooseBtn} />
+
+      {/* <Hero TrendingMovies={TrendingMovies} /> */}
+
+      {showModal && <SelectedMovie clickX={clickX} setShowModal={setShowModal} selectedMovie={selectedMovie} />}
+
+      {TrendingMovies.length === 0 || TvShow.length === 0 ? (
+        loadingText
+      ) : (
+        <MoviesList clickItem={clickItem} TrendingMovies={TrendingMovies} TvShow={TvShow} />
+      )}
     </div>
   );
 };
