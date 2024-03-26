@@ -6,7 +6,7 @@ const MoviesList = ({TrendingMovies, TvShow, clickItem}) => {
 
     let moviesItems = [...TrendingMovies, ...TvShow];
 
-    console.log(TvShow)
+    console.log(moviesItems)
 
     
   return (

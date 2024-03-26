@@ -4,6 +4,7 @@ import Hero from "./Assets/Components/HeroSec/Hero";
 import img from "../src/Assets/adidas-climacool (1).gif";
 import MoviesList from "./Assets/Components/MoviesList/MoviesList";
 import SelectedMovie from "./Assets/Components/SelectedMovie/SelectedMovie";
+import Loading from "./Assets/Components/Loading/Loading";
 
 const App = () => {
   const [TrendingMovies, setTrendingMovies] = useState([]);
@@ -70,12 +71,12 @@ const App = () => {
     <div>
       <Navbar chooseBtn={chooseBtn} />
 
-      {/* <Hero TrendingMovies={TrendingMovies} /> */}
+      <Hero TrendingMovies={TrendingMovies} TvShow={TvShow} />
 
       {showModal && <SelectedMovie clickX={clickX} setShowModal={setShowModal} selectedMovie={selectedMovie} />}
 
       {TrendingMovies.length === 0 || TvShow.length === 0 ? (
-        loadingText
+        <Loading />
       ) : (
         <MoviesList clickItem={clickItem} TrendingMovies={TrendingMovies} TvShow={TvShow} />
       )}

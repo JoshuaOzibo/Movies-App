@@ -1,32 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
-const Hero = ({data}) => {
-    const [array, setArray] = useState(0)
-    
-    const arrayIndexed = data[array];
+const randomImages = (length) => Math.floor(Math.random() * length);
+const Hero = ({TrendingMovies, TvShow}) => {
+  const [loadImages, setLoadImages] = useState([]);
+  const collectionOfMovies = [... TrendingMovies, ...TvShow];
 
-    const clickNext =() =>{
-        const nextImg = array === data.length - 1;
-        const currentImg = nextImg ? 0 : array + 1;
-        setArray( currentImg )
-    }
+  const moviesItemsImages = collectionOfMovies.map((items) =>{
+    return items.poster_path
+  });
 
-    // http://image.tmdb.org/t/p/w500/9Rj8l6gElLpRL7Kj17iZhrT5Zuw.jpg
+ setInterval(() => {
+  let randomImagesLength = randomImages(moviesItemsImages.length);
 
-    const bgStyle ={
-        width: '100%',
-        height: '100vh',
-    }
+  let randomImagesLink = moviesItemsImages[randomImagesLength];
+
+  useEffect(() => setLoadImages(randomImagesLink), [])
+ }, 4000);
 
   return (
-    <div>
-        <button onClick={clickNext}>Next</button>
-        <img  className="w-[100%] " src={`http://image.tmdb.org/t/p/w500${arrayIndexed}`} alt="img" />
+  <div>
+      {loadImages === 0 ? <p>Loading....</p> : <div>
+        <img  className="w-[100%] object-cover h-[600px] " src={`http://image.tmdb.org/t/p/w500${loadImages}`} alt="img" />
 
-        <div style={bgStyle}>
+        <div>
 
         </div>
-    </div>
+      </div>}
+  </div>
   )
 }
 
