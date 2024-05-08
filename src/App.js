@@ -71,7 +71,7 @@ const App = () => {
     <div>
       <Navbar chooseBtn={chooseBtn} />
 
-      <Hero TrendingMovies={TrendingMovies} TvShow={TvShow} />
+      {/* <Hero TrendingMovies={TrendingMovies} TvShow={TvShow} /> */}
 
       {showModal && <SelectedMovie clickX={clickX} setShowModal={setShowModal} selectedMovie={selectedMovie} />}
 
